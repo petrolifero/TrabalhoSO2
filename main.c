@@ -8,7 +8,7 @@
 #define CHAIRS 5                /* número de cadeiras para os clientes à espera */
 #define BARBERS 4
 
-sem_t customers[BARBERS];                /* número de cliente à espera de atendimento */
+sem_t customers[BARBERS];                /* vetor de número de cliente à espera de atendimento */
 sem_t barbers[BARBERS];         /* vetor de barbeiros à espera de clientes */
 sem_t mutex;                    /* para exclusão mútua */
 int waiting = 0;                /* clientes que estão esperando (não estão cortando) */
@@ -39,7 +39,9 @@ for(i=0; i<BARBERS; i++)
 {
 	int j=i;
 	pthread_create(&b[i], NULL, (void *) barber, (void*)&j);
-	sleep(1);
+	sleep(1); //única parte ruim do codigo, para dar tempo do barbeiro utilizar o j
+	//possivel mudança : adicionar um mutex relativo ao j
+	//porém todas as vezes que testei, dava problemas, então mantive assim
 }
 
  /* criação indefinida de clientes */
